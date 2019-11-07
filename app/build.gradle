@@ -13,14 +13,8 @@ apply plugin: 'application'
 
 group 'com.wsbinz'
 version '0.0.1-SNAPSHOT'
-mainClassName = "io.ktor.server.tomcat.EngineMain"
+mainClassName = "io.ktor.server.netty.DevelopmentEngine"
 
-sourceSets {
-    main.kotlin.srcDirs = main.java.srcDirs = ['src']
-    test.kotlin.srcDirs = test.java.srcDirs = ['test']
-    main.resources.srcDirs = ['resources']
-    test.resources.srcDirs = ['testresources']
-}
 
 repositories {
     mavenLocal()
@@ -30,9 +24,24 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "io.ktor:ktor-server-tomcat:$ktor_version"
+    compile "io.ktor:ktor-server-core:$ktor_version"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
     compile "ch.qos.logback:logback-classic:$logback_version"
+    compile "io.ktor:ktor-locations:$ktor_version"
     testCompile "io.ktor:ktor-server-tests:$ktor_version"
     implementation("io.ktor:ktor-gson:$ktor_version")
     implementation("io.ktor:ktor-freemarker:$ktor_version")
+    implementation("org.jetbrains.exposed:exposed:0.17.6")
+    implementation("com.h2database:h2:1.4.191")
+    implementation("joda-time:joda-time:2.9.2")
+    implementation("org.springframework.security:spring-security-crypto:5.2.0.RELEASE")
+    implementation("io.ktor:ktor-auth:$ktor_version")
+
+}
+
+sourceSets {
+    main.kotlin.srcDirs = main.java.srcDirs = [ 'src' ]
+    test.kotlin.srcDirs = test.java.srcDirs = [ 'test' ]
+    main.resources.srcDirs = [ 'resources' ]
+    test.resources.srcDirs = [ 'testresources' ]
 }
