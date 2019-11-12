@@ -34,14 +34,11 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed:0.17.6")
     implementation("com.h2database:h2:1.4.191")
     implementation("joda-time:joda-time:2.9.2")
-    implementation("org.springframework.security:spring-security-crypto:5.2.0.RELEASE")
+    compile group: "org.mindrot", name: "jbcrypt", version: "0.4"
     implementation("io.ktor:ktor-auth:$ktor_version")
+    compile group: 'com.mchange.c3p0', name: 'com.springsource.com.mchange.v2.c3p0', version: '0.9.1.2'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
 
-}
-
-sourceSets {
-    main.kotlin.srcDirs = main.java.srcDirs = [ 'src' ]
-    test.kotlin.srcDirs = test.java.srcDirs = [ 'test' ]
-    main.resources.srcDirs = [ 'resources' ]
-    test.resources.srcDirs = [ 'testresources' ]
 }
