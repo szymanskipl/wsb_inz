@@ -61,6 +61,26 @@ fun Application.module(dao: DAOFacade) {
     install(ConditionalHeaders)
     install(PartialContent)
     install(Locations)
+    install(Authentication){
+        form(name = "auth"){
+            val userEmail = "userEmail"
+            val password = "password"
+            challenge {
+                val error = Login()
+                val errors: Map<Any, AuthenticationFailedCause> = call.authentication.errors
+                when (errors.values.singleOrNull()) {
+                    AuthenticationFailedCause.InvalidCredentials ->
+                        call.respondRedirect(error.copy(error = "Niepoprawny email lub hasło"))
+
+                    AuthenticationFailedCause.NoCredentials ->
+                        call.respondRedirect(error.copy(error = "Najpierw musisz się zalogować"))
+
+                    else ->
+                        call.respondRedirect(Login())
+                }
+            }
+        }
+    }
     install(Sessions) {
         cookie<com.wsbinz.server.AppSession>("SESSION"){
             transform(SessionTransportTransformerMessageAuthentication(hashKey))
