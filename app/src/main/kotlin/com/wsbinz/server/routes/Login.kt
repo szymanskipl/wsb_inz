@@ -3,6 +3,9 @@ package com.wsbinz.server.routes
 import com.wsbinz.dao.*
 import com.wsbinz.server.*
 import io.ktor.application.*
+import io.ktor.auth.UserIdPrincipal
+import io.ktor.auth.authenticate
+import io.ktor.auth.principal
 import io.ktor.freemarker.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -27,24 +30,13 @@ fun Route.login(dao: DAOFacade) {
         }
     }
 
-    post<Login> {
-        val post = call.receive<Parameters>()
-        val userEmail = post["userEmail"]
-        val password = post["password"]
-
-        val error = Login()
-
-        val login = when {
-            userEmail!!.length < 4 -> null
-            password!!.length < 8 -> null
-            !emailValidation(userEmail) -> null
-            else -> dao.userVerify(userEmail, password)
-        }
-        if (login == null) {
-            call.respondRedirect(error.copy(error = "Niepoprawny email lub hasło"))
-        } else {
-            call.sessions.set(AppSession(login.email))
-            call.respondRedirect(UniversitiesPage())
+    authenticate("auth") {
+        post<Login> {
+            val principal = call.principal<UserIdPrincipal>()
+            if (principal != null) {
+                call.sessions.set(AppSession(principal.name))
+                call.respondRedirect(UniversitiesPage())
+            }
         }
     }
 

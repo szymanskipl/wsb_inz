@@ -63,8 +63,8 @@ fun Application.module(dao: DAOFacade) {
     install(Locations)
     install(Authentication){
         form(name = "auth"){
-            val userEmail = "userEmail"
-            val password = "password"
+            userParamName = "username"
+            passwordParamName = "password"
             challenge {
                 val error = Login()
                 val errors: Map<Any, AuthenticationFailedCause> = call.authentication.errors
@@ -78,6 +78,11 @@ fun Application.module(dao: DAOFacade) {
                     else ->
                         call.respondRedirect(Login())
                 }
+            }
+            validate {
+                credentials ->
+                if(dao.userVerify(userParamName, passwordParamName) != null) UserIdPrincipal(credentials.name)
+                else null
             }
         }
     }
