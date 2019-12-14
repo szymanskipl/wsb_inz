@@ -11,6 +11,8 @@ import io.ktor.features.*
 import io.ktor.freemarker.FreeMarker
 import io.ktor.gson.gson
 import io.ktor.http.*
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
 import io.ktor.locations.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -23,12 +25,13 @@ import io.ktor.sessions.*
 import io.ktor.util.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.Duration
 
 @Location("/admin/login")
 data class Login(val error: String? = null)
 
-@Location("/admin/universities")
-class UniversitiesPage()
+@Location("/admin/courses")
+class CoursesPage()
 
 @Location("/admin/logout")
 class Logout()
@@ -40,9 +43,8 @@ val dao = DAOFacadeDatabase(
     )
 )
 
-val hashKey = hex("12684616132154684")
+data class AppSession(val visitor: String)
 
-data class AppSession(val userEmail: String)
 
 fun startServer() = embeddedServer(Netty, port = 8080) {
     dao.init()
@@ -61,43 +63,49 @@ fun Application.module(dao: DAOFacade) {
     install(ConditionalHeaders)
     install(PartialContent)
     install(Locations)
-    install(Authentication){
-        form(name = "auth"){
+    install(Authentication) {
+        form(name = "auth") {
             userParamName = "username"
             passwordParamName = "password"
             challenge {
-                val error = Login()
                 val errors: Map<Any, AuthenticationFailedCause> = call.authentication.errors
+                val error = Login()
                 when (errors.values.singleOrNull()) {
                     AuthenticationFailedCause.InvalidCredentials ->
-                        call.respondRedirect(error.copy(error = "Niepoprawny email lub hasło"))
+                        call.respondRedirect(error.copy(error = "true"))
 
                     AuthenticationFailedCause.NoCredentials ->
-                        call.respondRedirect(error.copy(error = "Najpierw musisz się zalogować"))
+                        call.respondRedirect(error.copy(error = "true"))
 
                     else ->
                         call.respondRedirect(Login())
                 }
             }
-            validate {
-                credentials ->
-                if(dao.userVerify(userParamName, passwordParamName) != null) UserIdPrincipal(credentials.name)
-                else null
+            validate { credentials ->
+                if (dao.userVerify(credentials.name, credentials.password) != null) {
+                    serverLogger.info("correct credentials")
+                    UserIdPrincipal(credentials.name)
+                } else null
             }
         }
     }
     install(Sessions) {
-        cookie<com.wsbinz.server.AppSession>("SESSION"){
-            transform(SessionTransportTransformerMessageAuthentication(hashKey))
+        cookie<com.wsbinz.server.AppSession>("SESSION") {
+            val secret = "w298weuefj9348hferh87t30fodf384u3948hert"
+            transform(SessionTransportTransformerMessageAuthentication(secret.toByteArray(), "HmacSHA256"))
+            cookie.duration = Duration.ofMinutes(10)
         }
     }
     install(FreeMarker) {
         templateLoader = ClassTemplateLoader(this::class.java.classLoader, "templates")
     }
 
-    routing{
+    routing {
         login(dao)
-        universitiesPage(dao)
+        coursesPage(dao)
+        static("/static") {
+            resources("static")
+        }
     }
 }
 

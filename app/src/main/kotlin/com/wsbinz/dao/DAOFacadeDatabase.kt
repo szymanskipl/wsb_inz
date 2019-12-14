@@ -2,6 +2,8 @@ package com.wsbinz.dao
 
 import com.wsbinz.auth.BcryptHasher
 import com.wsbinz.dao.*
+import com.wsbinz.model.Category
+import com.wsbinz.model.Course
 import com.wsbinz.model.University
 import com.wsbinz.model.User
 import org.jetbrains.exposed.sql.*
@@ -15,31 +17,30 @@ interface DAOFacade : Closeable {
     //Users
     fun createUser(email: String, passwordHash: String, role: String)
     fun getUser(email: String): User?
+    fun userVerify(email: String, password: String): User?
     //Universities
     fun createUniversity(name: String, city: String, urlAddress: String)
     fun updateUniversity(id: Int, name: String, city: String, urlAddress: String)
     fun deleteUniversity(id: Int)
     fun getUniversity(id: Int): University?
     fun getAllUniversities(): List<University>
-    fun userVerify(email: String, password: String): User?
+    //Courses
+    fun createCourse(name: String, description: String, category: Category)
+    fun updateCourse(id: Int, name: String, description: String, category: Category)
+    fun deleteCourse(id: Int)
+    fun getCourse(id: Int): Course?
+    fun getAllCourses(): List<Course>
+
 }
 
 class DAOFacadeDatabase(val db: Database) : DAOFacade {
 
     //init database
     override fun init() = transaction(db) {
+//        exec("CREATE TYPE CategoryEnum AS ENUM ('K1', 'K2', 'K3');")
         SchemaUtils.create(*tables)
-//        val users = listOf(
-//            User(
-//                "szymanski@stethome.com",
-//                BcryptHasher.hashPassword("testowe"),
-//                "admin"))
-//        Users.batchInsert(users){ user ->
-//            this[Users.email] = user.email
-//            this[Users.passwordHash] = user.passwordHash
-//            this[Users.role] = user.role
-//        }
         createUser("admin@admin.pl", BcryptHasher.hashPassword("admin123"), "admin")
+//        createCourse("Informatyka inżynierska", "To jest informatyka", Category.K1)
         Unit
     }
 
@@ -104,6 +105,42 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
     override fun getAllUniversities() = transaction(db) {
         Universities.selectAll().map {
             University(it[Universities.id], it[Universities.name], it[Universities.city], it[Universities.urlAddress])
+        }
+    }
+
+    //Courses
+    override fun createCourse(name: String, description: String, category: Category) = transaction(db) {
+        Courses.insert {
+            it[Courses.name] = name
+            it[Courses.description] = description
+            it[Courses.category] = category
+        }
+        Unit
+    }
+
+    override fun updateCourse(id: Int, name: String, description: String, category: Category)= transaction(db) {
+        Courses.update({Courses.id eq id}) {
+            it[Courses.name] = name
+            it[Courses.description] = description
+            it[Courses.category] = category
+        }
+        Unit
+    }
+
+    override fun deleteCourse(id: Int)= transaction(db) {
+        Courses.deleteWhere { Courses.id eq id }
+        Unit
+    }
+
+    override fun getCourse(id: Int) = transaction(db) {
+        Courses.select {Courses.id eq id}.map {
+            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.category])
+        }.singleOrNull()
+    }
+
+    override fun getAllCourses() = transaction(db) {
+        Courses.selectAll().map {
+            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.category])
         }
     }
 

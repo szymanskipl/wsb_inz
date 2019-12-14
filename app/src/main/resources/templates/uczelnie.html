@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <title>Uczelnie - panel administracyjny</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <img src="logo.svg" width="200px" />
+        </div>
+
+        <ul class="list-unstyled components">
+          <li>
+            <a href="kierunki.html"><img src="icon_kierunki.svg" />Kierunki</a>
+          </li>
+          <li class="active">
+            <a href="uczelnie.html"><img src="icon_uczelnie.svg" />Uczelnie</a>
+          </li>
+          <li>
+            <a href="pytania.html"><img src="icon_pytania.svg" />Pytania</a>
+          </li>
+          <li>
+            <a href="wyloguj.html"><img src="icon_wyloguj.svg" />Wyloguj</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Page Content -->
+      <div id="content">
+        <div class="card header">
+          <span>Uczelnie</span>
+
+         <a href="uczelnia_form.html"><span class="btn btn-primary add-btn">+ DODAJ NOWĄ</span></a>
+        </div>
+
+        <table class="table table-condensed" id="myTable">
+          <tbody>
+            <tr>
+              <td class="col-sm-10" id="row-head">
+                <div
+                  data-toggle="collapse"
+                  data-target="#demo1"
+                  data-parent="#myTable"
+                >
+                  <span class="head1">POZNAŃ</span>
+                </div>
+              </td>
+            </tr>
+
+            <tr id="demo1" class="collapse">
+              <td>
+                <span class="university-item">Uniwersytet im. Adama Mickiewicza</span>
+              </td>
+
+              <td class="col-sm-1 action-icons">
+                <img src="icon_edit.svg" />
+              </td>
+              <td class="col-sm-1 action-icons">
+                <img src="icon_delete.svg" />
+              </td>
+            </tr>
+            <tr id="demo1" class="collapse">
+              <td>
+                <span class="university-item">Uniwersytet Ekonomiczny</span>
+              </td>
+
+              <td class="col-sm-1 action-icons">
+                <img src="icon_edit.svg" />
+              </td>
+              <td class="col-sm-1 action-icons">
+                <img src="icon_delete.svg" />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-sm-10" id="row-head">
+                <div
+                  data-toggle="collapse"
+                  data-target="#demo2"
+                  data-parent="#myTable"
+                >
+                  <span class="head1">WROCŁAW</span>
+                </div>
+              </td>
+            </tr>
+
+            <tr id="demo2" class="collapse">
+              <td>
+                <span class="university-item">UAM</span>
+              </td>
+
+              <td class="col-sm-1 action-icons">
+                <img src="icon_edit.svg" />
+              </td>
+              <td class="col-sm-1 action-icons">
+                <img src="icon_delete.svg" />
+              </td>
+            </tr>
+            <tr id="demo2" class="collapse">
+              <td>
+                <span class="university-item">UE</span>
+              </td>
+
+              <td class="col-sm-1 action-icons">
+                <img src="icon_edit.svg" />
+              </td>
+              <td class="col-sm-1 action-icons">
+                <img src="icon_delete.svg" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

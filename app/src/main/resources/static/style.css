@@ -1,0 +1,193 @@
+body {
+  margin: 0 auto;
+  font-family: "Roboto", sans-serif;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+/* LoginPage */
+.login-page {
+  margin: 0 auto;
+  background-image: url("/static/img/tlo_admin.svg");
+  background-position: center;
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+.login-box {
+  background: #f5f5f5 0% 0% no-repeat padding-box;
+  box-shadow: 4px 4px 6px #00000029;
+  opacity: 0.85;
+  margin: 0 auto;
+  margin-top: 100px;
+  display: box;
+  padding: 50px;
+  max-width: 400px;
+}
+
+.login-box .form-control {
+  border: 2px solid #0000b1;
+  border-radius: 25px;
+}
+
+.login-box label {
+  color: #0000b1;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.logo {
+  text-align: center;
+}
+
+.logo img {
+  width: 160px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  background: #0000b1 0% 0% no-repeat padding-box;
+  box-shadow: 0px 8px 8px #0000003d;
+  border-radius: 18px;
+  opacity: 1;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* AdminPanel */
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 100vh;
+  background: #f2f2f2 0% 0% no-repeat padding-box;
+  color: #727272;
+  transition: all 0.3s;
+  box-shadow: 0px 9px 18px #0000002e;
+  font-weight: bold;
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #0000b1 0% 0% no-repeat padding-box;
+}
+
+#sidebar ul.components {
+  padding: 10px 0;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 14px;
+  display: block;
+}
+
+#sidebar ul li a img {
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-top: -5px;
+  width: 25px;
+}
+
+#sidebar .active {
+  color: #3985a3;
+  background: #ffffff;
+}
+
+#content {
+  width: 100%;
+}
+
+.card.header {
+  padding: 25px;
+  box-shadow: 0px 3px 6px #00000029;
+  font-weight: bold;
+  display: block;
+}
+
+#row-head {
+  cursor: pointer;
+}
+
+.head1 {
+  font-weight: bold;
+  padding: 8px;
+}
+
+.head2 {
+  padding-left: 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#row-head p {
+  font-size: 14px;
+  padding-left: 8px;
+}
+
+.action-icons {
+  width: 20px;
+}
+
+.add-btn {
+  width: 140px;
+  float: right;
+  margin-top: -7px;
+}
+
+.courses-list {
+  font-size: 14px;
+}
+
+.university-item {
+  padding-left: 8px;
+}
+
+.university-form {
+  margin-left: 50px;
+}
+
+.university-form .form-group {
+  width: 300px;
+}
+
+.university-form-head {
+  font-weight: bold;
+  display: block;
+  padding: 50px;
+  font-size: 30px;
+  color: #0000b1;
+}
+
+.university-form .form-control {
+  border: 2px solid #0000b1;
+  border-radius: 25px;
+}
+
+.university-form label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.university-form button, a {
+  margin-bottom: 20px;
+}
+
+.card.courses {
+  width: 300px;
+}
+
+.form-group.course-description {
+  width: 500px;
+}
