@@ -4,7 +4,5 @@ data class Course (
     val id: Int,
     val name: String,
     val description: String,
-    val category: Category
+    val category: String
 )
-
-enum class Category {K1, K2, K3}

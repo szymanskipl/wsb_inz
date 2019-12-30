@@ -25,16 +25,23 @@ import io.ktor.sessions.*
 import io.ktor.util.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.io.File
 import java.time.Duration
 
 @Location("/admin/login")
 data class Login(val error: String? = null)
 
-@Location("/admin/courses")
+@Location("/admin/kierunki")
 class CoursesPage()
 
-@Location("/admin/logout")
+@Location("/admin/wyloguj")
 class Logout()
+
+@Location("/admin/kierunki/nowy")
+class NewCoursePage()
+
+@Location("/admin/kierunki/{id}/edycja")
+class EditCoursePage(val id: Int)
 
 val dao = DAOFacadeDatabase(
     Database.connect(
@@ -90,10 +97,15 @@ fun Application.module(dao: DAOFacade) {
         }
     }
     install(Sessions) {
-        cookie<com.wsbinz.server.AppSession>("SESSION") {
-            val secret = "w298weuefj9348hferh87t30fodf384u3948hert"
-            transform(SessionTransportTransformerMessageAuthentication(secret.toByteArray(), "HmacSHA256"))
-            cookie.duration = Duration.ofMinutes(10)
+        val encryptKey = hex("b8102a69cb71141edf8df21d4acf83b2")
+        val authKey = hex("fe7c4a2c78ad27b12c197219e647865b")
+        cookie<AppSession>(
+            "SESSION",
+            directorySessionStorage(File(".session"), cached = true)
+        ) {
+
+            cookie.path = "/"
+            transform(SessionTransportTransformerEncrypt(encryptKey, authKey))
         }
     }
     install(FreeMarker) {
@@ -103,9 +115,11 @@ fun Application.module(dao: DAOFacade) {
     routing {
         login(dao)
         coursesPage(dao)
+        newCoursePage(dao)
         static("/static") {
             resources("static")
         }
+        editCoursePage(dao)
     }
 }
 

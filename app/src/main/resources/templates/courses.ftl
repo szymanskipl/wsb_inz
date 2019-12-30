@@ -10,16 +10,16 @@
 
         <ul class="list-unstyled components">
           <li class="active">
-            <a href="kierunki.html"><img src="/static/img/icon_kierunki.svg" />Kierunki</a>
+            <a href="./kierunki"><img src="/static/img/icon_kierunki.svg" />Kierunki</a>
           </li>
           <li>
-            <a href="uczelnie.html"><img src="/static/img/icon_uczelnie.svg" />Uczelnie</a>
+            <a href="./uczelnie"><img src="/static/img/icon_uczelnie.svg" />Uczelnie</a>
           </li>
           <li>
-            <a href="pytania.html"><img src="/static/img/icon_pytania.svg" />Pytania</a>
+            <a href="./pytania"><img src="/static/img/icon_pytania.svg" />Pytania</a>
           </li>
           <li>
-            <a href="wyloguj.html"><img src="/static/img/icon_wyloguj.svg" />Wyloguj</a>
+            <a href="./wyloguj"><img src="/static/img/icon_wyloguj.svg" />Wyloguj</a>
           </li>
         </ul>
       </nav>
@@ -28,7 +28,7 @@
       <div id="content">
         <div class="card header">
           Kierunki
-          <a href="kierunek_form.html"><span class="btn btn-primary add-btn">+ DODAJ NOWY</span></a>
+          <a href="./kierunki/nowy"><span class="btn btn-primary add-btn">+ DODAJ NOWY</span></a>
         </div>
         <table class="table table-condensed" id="myTable">
           <tbody>
@@ -40,11 +40,13 @@
                 </div>
                 <div id="row${courses.id}" class="collapse">
                     <span class="head2">Opis kierunku:</span>
-                    <p>coś tam coś tam...</p>
+                    <p>${courses.description}</p>
                 </div>
               </td>
               <td class="col-sm-1 action-icons">
-                <img src="/static/img/icon_edit.svg" />
+                    <a href="./kierunki/${courses.id}/edycja">
+                        <img src="/static/img/icon_edit.svg"/>
+                    </a>
               </td>
               <td class="col-sm-1 action-icons">
                 <img src="/static/img/icon_delete.svg" />

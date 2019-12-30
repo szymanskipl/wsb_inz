@@ -1,8 +1,6 @@
 package com.wsbinz.dao
 
 import com.wsbinz.auth.BcryptHasher
-import com.wsbinz.dao.*
-import com.wsbinz.model.Category
 import com.wsbinz.model.Course
 import com.wsbinz.model.University
 import com.wsbinz.model.User
@@ -25,8 +23,8 @@ interface DAOFacade : Closeable {
     fun getUniversity(id: Int): University?
     fun getAllUniversities(): List<University>
     //Courses
-    fun createCourse(name: String, description: String, category: Category)
-    fun updateCourse(id: Int, name: String, description: String, category: Category)
+    fun createCourse(name: String, description: String, category: String)
+    fun updateCourse(id: Int, name: String, description: String, category: String)
     fun deleteCourse(id: Int)
     fun getCourse(id: Int): Course?
     fun getAllCourses(): List<Course>
@@ -109,7 +107,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
     }
 
     //Courses
-    override fun createCourse(name: String, description: String, category: Category) = transaction(db) {
+    override fun createCourse(name: String, description: String, category: String) = transaction(db) {
         Courses.insert {
             it[Courses.name] = name
             it[Courses.description] = description
@@ -118,7 +116,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         Unit
     }
 
-    override fun updateCourse(id: Int, name: String, description: String, category: Category)= transaction(db) {
+    override fun updateCourse(id: Int, name: String, description: String, category: String)= transaction(db) {
         Courses.update({Courses.id eq id}) {
             it[Courses.name] = name
             it[Courses.description] = description
