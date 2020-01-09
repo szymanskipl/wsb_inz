@@ -34,6 +34,9 @@ data class Login(val error: String? = null)
 @Location("/admin/kierunki")
 class CoursesPage()
 
+@Location("/admin/uczelnie")
+class UniversitiesPage()
+
 @Location("/admin/wyloguj")
 class Logout()
 
@@ -42,6 +45,18 @@ class NewCoursePage()
 
 @Location("/admin/kierunki/{id}/edycja")
 class EditCoursePage(val id: Int)
+
+@Location("/admin/kierunki/{id}/usun")
+class DeleteCoursePage(val id: Int)
+
+@Location("/admin/uczelnie/nowa")
+class NewUniversityPage()
+
+@Location("/admin/uczelnie/{id}/edycja")
+class EditUniversityPage(val id: Int)
+
+@Location("/admin/uczelnie/{id}/usun")
+class DeleteUniversityPage(val id: Int)
 
 val dao = DAOFacadeDatabase(
     Database.connect(
@@ -113,13 +128,19 @@ fun Application.module(dao: DAOFacade) {
     }
 
     routing {
-        login(dao)
-        coursesPage(dao)
-        newCoursePage(dao)
         static("/static") {
             resources("static")
         }
+        login(dao)
+        coursesPage(dao)
+        newCoursePage(dao)
         editCoursePage(dao)
+        deleteCoursePage(dao)
+        universitiesPage(dao)
+        newUniversityPage(dao)
+        editUniversityPage(dao)
+        deleteUniversityPage(dao)
+
     }
 }
 

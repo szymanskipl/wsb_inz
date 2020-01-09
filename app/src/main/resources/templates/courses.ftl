@@ -49,7 +49,9 @@
                     </a>
               </td>
               <td class="col-sm-1 action-icons">
-                <img src="/static/img/icon_delete.svg" />
+                <a href="./kierunki/${courses.id}/usun">
+                   <img src="/static/img/icon_delete.svg"/>
+                </a>
               </td>
             </tr>
             </#list>

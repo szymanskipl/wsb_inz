@@ -70,7 +70,7 @@
 
           <div>
             <a
-              href="../kierunki"
+              href="../"
               id="cancel"
               name="cancel"
               class="btn btn-primary"

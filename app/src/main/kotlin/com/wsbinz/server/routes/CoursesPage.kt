@@ -35,7 +35,6 @@ fun Route.newCoursePage(dao: DAOFacade) {
         if (session == null) {
             call.respondRedirect(Login())
         } else {
-            val courses: List<Course> = dao.getAllCourses()
             call.respond(
                 FreeMarkerContent(
                     "newCourse.ftl", null
@@ -55,7 +54,6 @@ fun Route.editCoursePage(dao: DAOFacade) {
     get<EditCoursePage> {
         val session = call.sessions.get<AppSession>()
         val course = dao.getCourse(it.id)
-        serverLogger.info(it.id.toString())
         if (session == null) {
             call.respondRedirect(Login())
         } else {
@@ -71,5 +69,22 @@ fun Route.editCoursePage(dao: DAOFacade) {
         val post = call.receiveParameters()
         dao.updateCourse(it.id, post["name"].toString(), post["description"].toString(), post["category"].toString())
         call.respondRedirect(CoursesPage())
+    }
+}
+
+fun Route.deleteCoursePage(dao: DAOFacade) {
+    get<DeleteCoursePage> {
+        val session = call.sessions.get<AppSession>()
+        val course = dao.getCourse(it.id)
+        if (session == null) {
+            call.respondRedirect(Login())
+        } else {
+            if (course == null) {
+                call.respondRedirect(CoursesPage())
+            } else {
+                dao.deleteCourse(it.id)
+                call.respondRedirect(CoursesPage())
+            }
+        }
     }
 }
