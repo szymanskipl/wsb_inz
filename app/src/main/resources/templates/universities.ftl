@@ -1,5 +1,5 @@
 <#import "template.ftl" as layout />
-<@layout.mainLayout title="Kierunki - Panel administracyjny">
+<@layout.mainLayout title="Uczelnie - Panel administracyjny">
 <body>
     <div class="wrapper">
       <!-- Sidebar -->
@@ -9,10 +9,10 @@
         </div>
 
         <ul class="list-unstyled components">
-          <li class="active">
+          <li>
             <a href="/admin/kierunki"><img src="/static/img/icon_kierunki.svg" />Kierunki</a>
           </li>
-          <li>
+          <li class="active">
             <a href="/admin/uczelnie"><img src="/static/img/icon_uczelnie.svg" />Uczelnie</a>
           </li>
           <li>
@@ -27,29 +27,36 @@
       <!-- Page Content -->
       <div id="content">
         <div class="card header">
-          Kierunki
-          <a href="/admin/kierunki/nowy"><span class="btn btn-primary add-btn">+ DODAJ NOWY</span></a>
+          Uczelnie
+          <a href="/admin/uczelnie/nowa"><span class="btn btn-primary add-btn">+ DODAJ NOWĄ</span></a>
         </div>
         <table class="table table-condensed" id="myTable">
           <tbody>
-          <#list courses as courses>
+          <#assign lastCity = "">
+          <#list universities?sort_by("city") as university>
+           <#if lastCity != university.city>
             <tr>
               <td class="col-sm-10" id="row-head">
-                <div data-toggle="collapse" data-target="#row${courses.id}" data-parent="#myTable">
-                  <span class="head1">${courses.name}</span>
-                </div>
-                <div id="row${courses.id}" class="collapse">
-                    <span class="head2">Opis kierunku:</span>
-                    <p>${courses.description}</p>
+                <div data-toggle="collapse" data-target="#row${university.city}" data-parent="#myTable">
+                  <span class="head1">${university.city}</span>
                 </div>
               </td>
+            </tr>
+            </#if>
+
+            <#assign lastCity = university.city>
+            <tr id="row${university.city}" class="collapse">
+              <td>
+                <span class="university-item">${university.name}</span>
+              </td>
+
               <td class="col-sm-1 action-icons">
-                    <a href="/admin/kierunki/${courses.id}/edycja">
-                        <img src="/static/img/icon_edit.svg"/>
-                    </a>
+                <a href="/admin/uczelnie/${university.id}/edycja">
+                    <img src="/static/img/icon_edit.svg"/>
+                </a>
               </td>
               <td class="col-sm-1 action-icons">
-                <a href="/admin/kierunki/${courses.id}/usun">
+                <a href="/admin/uczelnie/${university.id}/usun">
                    <img src="/static/img/icon_delete.svg"/>
                 </a>
               </td>

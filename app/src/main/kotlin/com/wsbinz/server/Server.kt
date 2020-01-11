@@ -18,7 +18,7 @@ import io.ktor.response.*
 import io.ktor.request.*
 import io.ktor.routing.*
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.server.jetty.Jetty
 import org.jetbrains.exposed.sql.*
 import org.postgresql.*
 import io.ktor.sessions.*
@@ -58,6 +58,21 @@ class EditUniversityPage(val id: Int)
 @Location("/admin/uczelnie/{id}/usun")
 class DeleteUniversityPage(val id: Int)
 
+@Location("/admin/pytania")
+class QuestionsPage()
+
+@Location("/admin/pytania/nowe")
+class NewQuestionPage()
+
+@Location("/admin/pytania/{id}/edycja")
+class EditQuestionPage(val id: Int)
+
+@Location("/admin/pytania/{id}/usun")
+class DeleteQuestionPage(val id: Int)
+
+@Location("/ankieta")
+class SurveyPage()
+
 val dao = DAOFacadeDatabase(
     Database.connect(
         "jdbc:postgresql://localhost:5432/wsb?user=student",
@@ -68,7 +83,7 @@ val dao = DAOFacadeDatabase(
 data class AppSession(val visitor: String)
 
 
-fun startServer() = embeddedServer(Netty, port = 8080) {
+fun startServer() = embeddedServer(Jetty, port = 8080) {
     dao.init()
     module(dao)
 }.start(true)
@@ -140,7 +155,11 @@ fun Application.module(dao: DAOFacade) {
         newUniversityPage(dao)
         editUniversityPage(dao)
         deleteUniversityPage(dao)
-
+        questionsPage(dao)
+        newQuestionPage(dao)
+        editQuestionPage(dao)
+        deleteQuestionPage(dao)
+        surveyPage(dao)
     }
 }
 

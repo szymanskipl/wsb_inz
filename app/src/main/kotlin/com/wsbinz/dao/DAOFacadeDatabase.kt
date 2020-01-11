@@ -1,9 +1,8 @@
 package com.wsbinz.dao
 
 import com.wsbinz.auth.BcryptHasher
-import com.wsbinz.model.Course
-import com.wsbinz.model.University
-import com.wsbinz.model.User
+import com.wsbinz.model.*
+import com.wsbinz.server.dao
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
@@ -17,7 +16,7 @@ interface DAOFacade : Closeable {
     fun getUser(email: String): User?
     fun userVerify(email: String, password: String): User?
     //Universities
-    fun createUniversity(name: String, city: String, urlAddress: String)
+    fun createUniversity(name: String, city: String, urlAddress: String): Int
     fun updateUniversity(id: Int, name: String, city: String, urlAddress: String)
     fun deleteUniversity(id: Int)
     fun getUniversity(id: Int): University?
@@ -28,7 +27,21 @@ interface DAOFacade : Closeable {
     fun deleteCourse(id: Int)
     fun getCourse(id: Int): Course?
     fun getAllCourses(): List<Course>
-
+    //UniversityCourse
+    fun createPair(university_id: Int, course_id: Int)
+    fun getAllCoursesForUniversity(university_id: Int): List<Course>?
+    fun deleteAllPairs(university_id: Int)
+    //Questions
+    fun createQuestion(text: String): Int
+    fun getQuestion(id: Int): Question?
+    fun getAllQuestions(): List<Question>
+    fun deleteQuestion(id: Int)
+    fun updateQuestion(id: Int, text: String)
+    //Answers
+    fun createAnswer(questionId: Int, text: String)
+    fun getAllAnswersForQuestion(questionId: Int): List<Answer>?
+    fun getAllAnswers(): List<Answer>?
+    fun deleteAllAnswers(questionId: Int)
 }
 
 class DAOFacadeDatabase(val db: Database) : DAOFacade {
@@ -71,13 +84,12 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
     }
 
     //Universities
-    override fun createUniversity(name: String, city: String, urlAddress: String) = transaction(db) {
+    override fun createUniversity(name: String, city: String, urlAddress: String): Int = transaction(db) {
         Universities.insert {
             it[Universities.name] = name
             it[Universities.city] = city
             it[Universities.urlAddress] = urlAddress
-        }
-        Unit
+        } get Universities.id
     }
 
     override fun updateUniversity(id: Int, name: String, city: String, urlAddress: String) = transaction(db) {
@@ -140,6 +152,80 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         Courses.selectAll().map {
             Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.category])
         }
+    }
+
+    override fun createPair(university_id: Int, course_id: Int) = transaction(db) {
+        UniversityCourse.insert {
+            it[UniversityCourse.universityId] = university_id
+            it[UniversityCourse.courseId] = course_id
+        }
+        Unit
+    }
+
+    override fun getAllCoursesForUniversity(university_id: Int) = transaction(db) {
+        UniversityCourse.leftJoin(Courses, {UniversityCourse.courseId}, {Courses.id}).select {UniversityCourse.universityId eq university_id}.map {
+            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.category])
+        }
+    }
+
+    override fun deleteAllPairs(university_id: Int) = transaction(db) {
+        UniversityCourse.deleteWhere { UniversityCourse.universityId eq university_id }
+        Unit
+    }
+
+    override fun createQuestion(text: String): Int = transaction(db) {
+        Questions.insert {
+            it[Questions.text] = text
+        } get Questions.id
+    }
+
+    override fun createAnswer(questionId: Int, text: String) = transaction(db) {
+        Answers.insert {
+            it[Answers.questionId] = questionId
+            it[Answers.text] = text
+        }
+        Unit
+    }
+
+    override fun getAllAnswersForQuestion(questionId: Int): List<Answer> = transaction(db) {
+        Answers.select {Answers.questionId eq questionId}.map {
+            Answer(it[Answers.questionId], it[Answers.text])
+        }
+    }
+
+    override fun getAllQuestions(): List<Question> = transaction(db) {
+        Questions.selectAll().map {
+            Question(it[Questions.id], it[Questions.text])
+        }
+    }
+
+    override fun deleteQuestion(id: Int) = transaction(db) {
+        Questions.deleteWhere { Questions.id eq id }
+        Unit
+    }
+
+    override fun getQuestion(id: Int): Question? = transaction(db) {
+        Questions.select {Questions.id eq id}.map {
+            Question(it[Questions.id], it[Questions.text])
+        }.singleOrNull()
+    }
+
+    override fun updateQuestion(id: Int, text: String) = transaction(db) {
+        Questions.update({Questions.id eq id}) {
+            it[Questions.text] = text
+        }
+        Unit
+    }
+
+    override fun getAllAnswers() = transaction(db) {
+        Answers.selectAll().map {
+            Answer(it[Answers.questionId], it[Answers.text])
+        }
+    }
+
+    override fun deleteAllAnswers(questionId: Int) = transaction(db) {
+        Answers.deleteWhere { Answers.questionId eq questionId }
+        Unit
     }
 
     override fun close() {}

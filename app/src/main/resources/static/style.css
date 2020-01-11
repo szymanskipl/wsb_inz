@@ -191,3 +191,79 @@ a:focus {
 .form-group.course-description {
   width: 500px;
 }
+
+.card.header.nav {
+  padding: 10px;
+  box-shadow: 0px 3px 6px #00000029;
+  display: block;
+  background-color: #263671;
+  border-radius: 0%;
+  color: #FCC10A;
+  font-weight: normal;
+}
+
+#nav-content {
+  width: 600px;
+  margin: 0 auto;
+}
+
+#nav-content li {
+  padding-left: 30px;
+}
+
+.list-inline-item.active {
+  font-weight: bold;
+}
+
+.card.header.nav img {
+  width: 50px;
+  margin: 0 auto;
+  display: block;
+  padding-bottom: 10px;
+}
+
+#banner {
+  height: 250px;
+}
+
+#banner img{
+  max-height: 250px;
+}
+
+.main-content {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.main-content h2 {
+  margin-top: 20px;
+  color: #FCC10A;
+  font: Bold 30px Roboto;
+}
+
+.main-content li {
+  font-size: 20px;
+  color: #263C7D;
+}
+
+.card.survey {
+  margin-top: 50px;
+}
+
+#answers {
+  width: 100%;
+}
+
+.question {
+  color: #263671;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#answers button {
+  background-color: #FCC10A;
+  border-color: #FCC10A;
+  color: #000000;
+  font: 16px Roboto;
+  width: 300px;
+}

@@ -10,23 +10,23 @@
 
         <ul class="list-unstyled components">
           <li class="active">
-            <a href="../kierunki"><img src="/static/img/icon_kierunki.svg" />Kierunki</a>
+            <a href="/admin/kierunki"><img src="/static/img/icon_kierunki.svg" />Kierunki</a>
           </li>
           <li>
-            <a href="../uczelnie"><img src="/static/img/icon_uczelnie.svg" />Uczelnie</a>
+            <a href="/admin/uczelnie"><img src="/static/img/icon_uczelnie.svg" />Uczelnie</a>
           </li>
           <li>
-            <a href="../pytania"><img src="/static/img/icon_pytania.svg" />Pytania</a>
+            <a href="/admin/pytania"><img src="/static/img/icon_pytania.svg" />Pytania</a>
           </li>
           <li>
-            <a href="../wyloguj"><img src="/static/img/icon_wyloguj.svg" />Wyloguj</a>
+            <a href="/admin/wyloguj"><img src="/static/img/icon_wyloguj.svg" />Wyloguj</a>
           </li>
         </ul>
       </nav>
 
       <!-- Page Content -->
       <div id="content">
-        <span class="university-form-head">Nowy kierunek</span>
+        <span class="university-form-head">Edytuj kierunek</span>
 
         <form action="/admin/kierunki/${course.id}/edycja" method="post" enctype="application/x-www-form-urlencoded" class="university-form">
           <div class="form-group course-description">
@@ -70,7 +70,7 @@
 
           <div>
             <a
-              href="../"
+              href="/admin/kierunki"
               id="cancel"
               name="cancel"
               class="btn btn-primary"
