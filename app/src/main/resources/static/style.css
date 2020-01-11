@@ -203,12 +203,12 @@ a:focus {
 }
 
 #nav-content {
-  width: 600px;
+  width: 800px;
   margin: 0 auto;
 }
 
 #nav-content li {
-  padding-left: 30px;
+  padding-left: 40px;
 }
 
 .list-inline-item.active {
@@ -218,7 +218,6 @@ a:focus {
 .card.header.nav img {
   width: 50px;
   margin: 0 auto;
-  display: block;
   padding-bottom: 10px;
 }
 
@@ -266,4 +265,8 @@ a:focus {
   color: #000000;
   font: 16px Roboto;
   width: 300px;
+}
+
+.list-inline {
+  margin-bottom: 0;
 }

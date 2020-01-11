@@ -4,17 +4,19 @@
     <div class="wraper">
 
       <div class="card header nav">
-        <img src="../static/img/logo.svg"/>
         <div id="nav-content">
           <ul class="list-inline">
-            <li class="list-inline-item active">
-              <a href="/ankieta">Znajdź swój kierunek (ankieta)</a>
+            <li class="list-inline-item">
+                <img src="../static/img/logo.svg"/>
             </li>
             <li class="list-inline-item">
               <a href="/miasta">Miasta studenckie</a>
             </li>
             <li class="list-inline-item">
               <a href="/kierunki">Kierunki studiów</a>
+            <li class="list-inline-item active">
+              <a href="/ankieta">Znajdź swój kierunek (ankieta)</a>
+            </li>
             </li>
           </ul>
         </div>
