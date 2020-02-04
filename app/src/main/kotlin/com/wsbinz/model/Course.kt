@@ -4,5 +4,5 @@ data class Course (
     val id: Int,
     val name: String,
     val description: String,
-    val category: String
+    val categoryId: Int
 )

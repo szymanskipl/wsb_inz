@@ -51,6 +51,22 @@
               />
         </div>
 
+        <div class="form-group">
+                    <label for="category">Kategoria dla odpowiedzi A:</label>
+                    <select class="form-control" name="category" id="category">
+                      <option value="K1">K1 [A-Człowiek]</option>
+                      <option value="K2">K2 [B-Człowiek]</option>
+                      <option value="K3">K3 [A-Technika]</option>
+                      <option value="K4">K4 [B-Technika]</option>
+                      <option value="K5">K5 [A-Dane]</option>
+                      <option value="K6">K6 [B-Dane]</option>
+                      <option value="K7">K7 [A-Sztuka]</option>
+                      <option value="K8">K8 [B-Sztuka]</option>
+                      <option value="K9">K9 [A-Zdrowie]</option>
+                      <option value="K10">K10 [B-Zdrowie]</option>
+                    </select>
+                  </div>
+
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź B (pole obowiązkowe)</label>
               <input
@@ -62,6 +78,22 @@
               />
         </div>
 
+        <div class="form-group">
+                            <label for="category">Kategoria dla odpowiedzi B:</label>
+                            <select class="form-control" name="category" id="category">
+                              <option value="K1">K1 [A-Człowiek]</option>
+                              <option value="K2">K2 [B-Człowiek]</option>
+                              <option value="K3">K3 [A-Technika]</option>
+                              <option value="K4">K4 [B-Technika]</option>
+                              <option value="K5">K5 [A-Dane]</option>
+                              <option value="K6">K6 [B-Dane]</option>
+                              <option value="K7">K7 [A-Sztuka]</option>
+                              <option value="K8">K8 [B-Sztuka]</option>
+                              <option value="K9">K9 [A-Zdrowie]</option>
+                              <option value="K10">K10 [B-Zdrowie]</option>
+                            </select>
+                          </div>
+
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź C (pole opcjonalne)</label>
               <input
@@ -72,6 +104,22 @@
               />
         </div>
 
+        <div class="form-group">
+                            <label for="category">Kategoria dla odpowiedzi C:</label>
+                            <select class="form-control" name="category" id="category">
+                              <option value="K1">K1 [A-Człowiek]</option>
+                              <option value="K2">K2 [B-Człowiek]</option>
+                              <option value="K3">K3 [A-Technika]</option>
+                              <option value="K4">K4 [B-Technika]</option>
+                              <option value="K5">K5 [A-Dane]</option>
+                              <option value="K6">K6 [B-Dane]</option>
+                              <option value="K7">K7 [A-Sztuka]</option>
+                              <option value="K8">K8 [B-Sztuka]</option>
+                              <option value="K9">K9 [A-Zdrowie]</option>
+                              <option value="K10">K10 [B-Zdrowie]</option>
+                            </select>
+                          </div>
+
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź D (pole opcjonalne)</label>
               <input
@@ -81,6 +129,22 @@
                 id="formGroupExampleInput"
               />
         </div>
+
+        <div class="form-group">
+                            <label for="category">Kategoria dla odpowiedzi D:</label>
+                            <select class="form-control" name="category" id="category">
+                              <option value="K1">K1 [A-Człowiek]</option>
+                              <option value="K2">K2 [B-Człowiek]</option>
+                              <option value="K3">K3 [A-Technika]</option>
+                              <option value="K4">K4 [B-Technika]</option>
+                              <option value="K5">K5 [A-Dane]</option>
+                              <option value="K6">K6 [B-Dane]</option>
+                              <option value="K7">K7 [A-Sztuka]</option>
+                              <option value="K8">K8 [B-Sztuka]</option>
+                              <option value="K9">K9 [A-Zdrowie]</option>
+                              <option value="K10">K10 [B-Zdrowie]</option>
+                            </select>
+                          </div>
 
           <div>
             <a

@@ -21,6 +21,7 @@ fun Route.surveyPage(dao: DAOFacade) {
             call.respondRedirect(Login())
         } else {
             val allQuestions: List<Question> = dao.getAllQuestions()
+            serverLogger.info(allQuestions.size.toString())
             var i = 0
             val question = allQuestions[i]
             val answers: List<Answer>? = dao.getAllAnswersForQuestion(question.id)
@@ -30,6 +31,15 @@ fun Route.surveyPage(dao: DAOFacade) {
                     mapOf("question" to question, "answers" to answers)
                 )
             )
+        }
+    }
+
+    put<SurveyPage> {
+        val session = call.sessions.get<AppSession>()
+        if (session == null) {
+            call.respondRedirect(Login())
+        } else {
+            val post = call.receiveParameters()
         }
     }
 }

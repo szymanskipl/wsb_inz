@@ -45,7 +45,7 @@ fun Route.newCoursePage(dao: DAOFacade) {
 
     post<NewCoursePage> {
         val post = call.receiveParameters()
-        dao.createCourse(post["name"].toString(), post["description"].toString(), post["category"].toString())
+        dao.createCourse(post["name"].toString(), post["description"].toString(), post["category"] as Int)
         call.respondRedirect(CoursesPage())
     }
 }
@@ -67,7 +67,7 @@ fun Route.editCoursePage(dao: DAOFacade) {
 
     post<EditCoursePage> {
         val post = call.receiveParameters()
-        dao.updateCourse(it.id, post["name"].toString(), post["description"].toString(), post["category"].toString())
+        dao.updateCourse(it.id, post["name"].toString(), post["description"].toString(), post["category"] as Int)
         call.respondRedirect(CoursesPage())
     }
 }

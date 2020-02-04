@@ -30,9 +30,10 @@
       </div>
     </div>
 
+    <form action="/ankieta" method="put" enctype="application/x-www-form-urlencoded">
       <div class="main-content">
         <div class="card survey">
-          <div class="card-header text-center question">
+          <div class="card-header text-center question" name="question_id" value="${question.id}">
             ${question.text}
           </div>
           <div class="card-body">
@@ -40,20 +41,20 @@
                 <tbody>
                   <tr class="text-center">
                     <td>
-                      <button type="button" class="btn btn-primary btn-lg">${answers[0].text}</button>
+                      <button type="submit" value="${answers[0].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[0].text}</button>
                     </td>
                     <td>
-                      <button type="button" class="btn btn-primary btn-lg">${answers[1].text}</button>
+                      <button type="submit" value="${answers[1].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[1].text}</button>
                     </td>
                   </tr class="text-center">
                   <#if answers[2]??>
                   <tr class="text-center">
                     <td>
-                      <button type="button" class="btn btn-primary btn-lg">${answers[2].text}</button>
+                      <button type="submit" value="${answers[2].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[2].text}</button>
                     </td>
                     <#if answers[3]??>
                     <td>
-                      <button type="button" class="btn btn-primary btn-lg">${answers[3].text}</button>
+                      <button type="submit" value="${answers[3].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[3].text}</button>
                     </td>
                     </#if>
                   </tr class="text-center">

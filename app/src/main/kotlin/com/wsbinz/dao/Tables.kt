@@ -9,7 +9,12 @@ val tables = arrayOf(
     Courses,
     UniversityCourse,
     Questions,
-    Answers
+    Answers,
+    Category,
+    AnswerCategory,
+    Surveys,
+    SurveyAnswer,
+    SurveyResults
 )
 
 
@@ -31,7 +36,7 @@ object Courses : Table("courses") {
     val id = integer("id").primaryKey().autoIncrement()
     val name = varchar("name", 255)
     val description = varchar("description", 255)
-    val category = varchar("category", 50)
+    val categoryId = integer("categoryId")
 }
 
 object UniversityCourse : Table("university_courses") {
@@ -45,6 +50,31 @@ object Questions : Table("questions") {
 }
 
 object Answers : Table("answers") {
+    val id = integer("id").primaryKey().autoIncrement()
     val questionId = integer("question_id")
     val text = varchar("text", 255)
+}
+
+object Category : Table("category") {
+    val id = integer("id").primaryKey().autoIncrement()
+    val name = varchar("text", 255)
+}
+
+object AnswerCategory : Table("answer_category") {
+    val answerId = integer("answer_id")
+    val categoryId = integer("category_id")
+}
+
+object Surveys: Table("surveys") {
+    val id = integer("id").primaryKey().autoIncrement()
+}
+
+object SurveyAnswer : Table("survey_answer") {
+    val surveyId = integer("survey_id")
+    val answerId = integer("answer_id")
+}
+
+object SurveyResults : Table("survey_results") {
+    val surveyId = integer("survey_id")
+    val courseId = integer("course_id")
 }

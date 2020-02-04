@@ -2,7 +2,6 @@ package com.wsbinz.dao
 
 import com.wsbinz.auth.BcryptHasher
 import com.wsbinz.model.*
-import com.wsbinz.server.dao
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.mindrot.jbcrypt.BCrypt
@@ -22,8 +21,8 @@ interface DAOFacade : Closeable {
     fun getUniversity(id: Int): University?
     fun getAllUniversities(): List<University>
     //Courses
-    fun createCourse(name: String, description: String, category: String)
-    fun updateCourse(id: Int, name: String, description: String, category: String)
+    fun createCourse(name: String, description: String, categoryId: Int)
+    fun updateCourse(id: Int, name: String, description: String, categoryId: Int)
     fun deleteCourse(id: Int)
     fun getCourse(id: Int): Course?
     fun getAllCourses(): List<Course>
@@ -119,20 +118,20 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
     }
 
     //Courses
-    override fun createCourse(name: String, description: String, category: String) = transaction(db) {
+    override fun createCourse(name: String, description: String, categoryId: Int) = transaction(db) {
         Courses.insert {
             it[Courses.name] = name
             it[Courses.description] = description
-            it[Courses.category] = category
+            it[Courses.categoryId] = categoryId
         }
         Unit
     }
 
-    override fun updateCourse(id: Int, name: String, description: String, category: String)= transaction(db) {
+    override fun updateCourse(id: Int, name: String, description: String, categoryId: Int)= transaction(db) {
         Courses.update({Courses.id eq id}) {
             it[Courses.name] = name
             it[Courses.description] = description
-            it[Courses.category] = category
+            it[Courses.categoryId] = categoryId
         }
         Unit
     }
@@ -144,13 +143,13 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
 
     override fun getCourse(id: Int) = transaction(db) {
         Courses.select {Courses.id eq id}.map {
-            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.category])
+            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.categoryId])
         }.singleOrNull()
     }
 
     override fun getAllCourses() = transaction(db) {
         Courses.selectAll().map {
-            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.category])
+            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.categoryId])
         }
     }
 
@@ -164,7 +163,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
 
     override fun getAllCoursesForUniversity(university_id: Int) = transaction(db) {
         UniversityCourse.leftJoin(Courses, {UniversityCourse.courseId}, {Courses.id}).select {UniversityCourse.universityId eq university_id}.map {
-            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.category])
+            Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.categoryId])
         }
     }
 
@@ -189,14 +188,14 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
 
     override fun getAllAnswersForQuestion(questionId: Int): List<Answer> = transaction(db) {
         Answers.select {Answers.questionId eq questionId}.map {
-            Answer(it[Answers.questionId], it[Answers.text])
+            Answer(it[Answers.id], it[Answers.questionId], it[Answers.text])
         }
     }
 
     override fun getAllQuestions(): List<Question> = transaction(db) {
         Questions.selectAll().map {
             Question(it[Questions.id], it[Questions.text])
-        }
+        }.sortedBy { it.id }
     }
 
     override fun deleteQuestion(id: Int) = transaction(db) {
@@ -219,7 +218,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
 
     override fun getAllAnswers() = transaction(db) {
         Answers.selectAll().map {
-            Answer(it[Answers.questionId], it[Answers.text])
+            Answer(it[Answers.id], it[Answers.questionId], it[Answers.text])
         }
     }
 
