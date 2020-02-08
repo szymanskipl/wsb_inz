@@ -1,6 +1,7 @@
 package com.wsbinz.server.routes
 
 import com.wsbinz.dao.*
+import com.wsbinz.model.Category
 import com.wsbinz.model.Course
 import com.wsbinz.server.*
 import io.ktor.application.*
@@ -35,9 +36,10 @@ fun Route.newCoursePage(dao: DAOFacade) {
         if (session == null) {
             call.respondRedirect(Login())
         } else {
+            val categories: List<Category>? = dao.getAllCategories()
             call.respond(
                 FreeMarkerContent(
-                    "newCourse.ftl", null
+                    "newCourse.ftl", mapOf("categories" to categories)
                 )
             )
         }
@@ -45,7 +47,7 @@ fun Route.newCoursePage(dao: DAOFacade) {
 
     post<NewCoursePage> {
         val post = call.receiveParameters()
-        dao.createCourse(post["name"].toString(), post["description"].toString(), post["category"] as Int)
+        dao.createCourse(post["name"].toString(), post["description"].toString(), post["category"]!!.toInt())
         call.respondRedirect(CoursesPage())
     }
 }
@@ -54,20 +56,25 @@ fun Route.editCoursePage(dao: DAOFacade) {
     get<EditCoursePage> {
         val session = call.sessions.get<AppSession>()
         val course = dao.getCourse(it.id)
+        val categories = dao.getAllCategories()
         if (session == null) {
             call.respondRedirect(Login())
         } else {
             if (course == null) {
                 call.respondRedirect(CoursesPage())
             } else {
-                call.respond(FreeMarkerContent("editCourse.ftl", mapOf("course" to course)))
+                call.respond(
+                    FreeMarkerContent(
+                        template = "editCourse.ftl",
+                        model = mapOf("course" to course, "categories" to categories)
+                    ))
             }
         }
     }
 
     post<EditCoursePage> {
         val post = call.receiveParameters()
-        dao.updateCourse(it.id, post["name"].toString(), post["description"].toString(), post["category"] as Int)
+        dao.updateCourse(it.id, post["name"].toString(), post["description"].toString(), post["category"]!!.toInt())
         call.respondRedirect(CoursesPage())
     }
 }

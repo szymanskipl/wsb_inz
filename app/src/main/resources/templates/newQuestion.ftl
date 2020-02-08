@@ -51,21 +51,22 @@
               />
         </div>
 
-        <div class="form-group">
-                    <label for="category">Kategoria dla odpowiedzi A:</label>
-                    <select class="form-control" name="category" id="category">
-                      <option value="K1">K1 [A-Człowiek]</option>
-                      <option value="K2">K2 [B-Człowiek]</option>
-                      <option value="K3">K3 [A-Technika]</option>
-                      <option value="K4">K4 [B-Technika]</option>
-                      <option value="K5">K5 [A-Dane]</option>
-                      <option value="K6">K6 [B-Dane]</option>
-                      <option value="K7">K7 [A-Sztuka]</option>
-                      <option value="K8">K8 [B-Sztuka]</option>
-                      <option value="K9">K9 [A-Zdrowie]</option>
-                      <option value="K10">K10 [B-Zdrowie]</option>
-                    </select>
-                  </div>
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi A:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_1[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
+        </div>
 
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź B (pole obowiązkowe)</label>
@@ -78,21 +79,22 @@
               />
         </div>
 
-        <div class="form-group">
-                            <label for="category">Kategoria dla odpowiedzi B:</label>
-                            <select class="form-control" name="category" id="category">
-                              <option value="K1">K1 [A-Człowiek]</option>
-                              <option value="K2">K2 [B-Człowiek]</option>
-                              <option value="K3">K3 [A-Technika]</option>
-                              <option value="K4">K4 [B-Technika]</option>
-                              <option value="K5">K5 [A-Dane]</option>
-                              <option value="K6">K6 [B-Dane]</option>
-                              <option value="K7">K7 [A-Sztuka]</option>
-                              <option value="K8">K8 [B-Sztuka]</option>
-                              <option value="K9">K9 [A-Zdrowie]</option>
-                              <option value="K10">K10 [B-Zdrowie]</option>
-                            </select>
-                          </div>
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi B:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_2[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
+        </div>
 
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź C (pole opcjonalne)</label>
@@ -104,21 +106,22 @@
               />
         </div>
 
-        <div class="form-group">
-                            <label for="category">Kategoria dla odpowiedzi C:</label>
-                            <select class="form-control" name="category" id="category">
-                              <option value="K1">K1 [A-Człowiek]</option>
-                              <option value="K2">K2 [B-Człowiek]</option>
-                              <option value="K3">K3 [A-Technika]</option>
-                              <option value="K4">K4 [B-Technika]</option>
-                              <option value="K5">K5 [A-Dane]</option>
-                              <option value="K6">K6 [B-Dane]</option>
-                              <option value="K7">K7 [A-Sztuka]</option>
-                              <option value="K8">K8 [B-Sztuka]</option>
-                              <option value="K9">K9 [A-Zdrowie]</option>
-                              <option value="K10">K10 [B-Zdrowie]</option>
-                            </select>
-                          </div>
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi C:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_3[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
+        </div>
 
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź D (pole opcjonalne)</label>
@@ -130,21 +133,22 @@
               />
         </div>
 
-        <div class="form-group">
-                            <label for="category">Kategoria dla odpowiedzi D:</label>
-                            <select class="form-control" name="category" id="category">
-                              <option value="K1">K1 [A-Człowiek]</option>
-                              <option value="K2">K2 [B-Człowiek]</option>
-                              <option value="K3">K3 [A-Technika]</option>
-                              <option value="K4">K4 [B-Technika]</option>
-                              <option value="K5">K5 [A-Dane]</option>
-                              <option value="K6">K6 [B-Dane]</option>
-                              <option value="K7">K7 [A-Sztuka]</option>
-                              <option value="K8">K8 [B-Sztuka]</option>
-                              <option value="K9">K9 [A-Zdrowie]</option>
-                              <option value="K10">K10 [B-Zdrowie]</option>
-                            </select>
-                          </div>
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi D:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_4[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
+        </div>
 
           <div>
             <a

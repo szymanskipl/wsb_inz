@@ -1,5 +1,5 @@
 <#import "template.ftl" as layout />
-<@layout.mainLayout title="Nowy kierunek - Panel administracyjny">
+<@layout.mainLayout title="Edycja kierunku - Panel administracyjny">
 <body>
     <div class="wrapper">
       <!-- Sidebar -->
@@ -44,16 +44,9 @@
           <div class="form-group">
             <label for="category">Kategoria</label>
             <select class="form-control" name="category" id="category">
-              <option value="K1" <#if course.category == "K1">selected</#if>>K1 [A-Człowiek]</option>
-              <option value="K2" <#if course.category == "K2">selected</#if>>K2 [B-Człowiek]</option>
-              <option value="K3" <#if course.category == "K3">selected</#if>>K3 [A-Technika]</option>
-              <option value="K4" <#if course.category == "K4">selected</#if>>K4 [B-Technika]</option>
-              <option value="K5" <#if course.category == "K5">selected</#if>>K5 [A-Dane]</option>
-              <option value="K6" <#if course.category == "K6">selected</#if>>K6 [B-Dane]</option>
-              <option value="K7" <#if course.category == "K7">selected</#if>>K7 [A-Sztuka]</option>
-              <option value="K8" <#if course.category == "K8">selected</#if>>K8 [B-Sztuka]</option>
-              <option value="K9" <#if course.category == "K9">selected</#if>>K9 [A-Zdrowie]</option>
-              <option value="K10" <#if course.category == "K10">selected</#if>>K10 [B-Zdrowie]</option>
+              <#list categories as categories>
+                <option value="${categories.id}" <#if categories.id == course.categoryId>selected</#if>>${categories.name}</option>
+              </#list>
             </select>
           </div>
 

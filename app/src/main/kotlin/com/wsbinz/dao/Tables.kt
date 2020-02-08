@@ -1,7 +1,6 @@
 package com.wsbinz.dao
 
 import org.jetbrains.exposed.sql.Table
-import org.postgresql.util.PGobject
 
 val tables = arrayOf(
     Users,
@@ -10,7 +9,7 @@ val tables = arrayOf(
     UniversityCourse,
     Questions,
     Answers,
-    Category,
+    Categories,
     AnswerCategory,
     Surveys,
     SurveyAnswer,
@@ -55,9 +54,9 @@ object Answers : Table("answers") {
     val text = varchar("text", 255)
 }
 
-object Category : Table("category") {
+object Categories : Table("categories") {
     val id = integer("id").primaryKey().autoIncrement()
-    val name = varchar("text", 255)
+    val name = varchar("name", 255)
 }
 
 object AnswerCategory : Table("answer_category") {

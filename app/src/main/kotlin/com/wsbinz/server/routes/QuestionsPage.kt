@@ -37,10 +37,11 @@ fun Route.newQuestionPage(dao: DAOFacade) {
         if (session == null) {
             call.respondRedirect(Login())
         } else {
+            val categories = dao.getAllCategories()
             call.respond(
                 FreeMarkerContent(
                     "newQuestion.ftl",
-                    null
+                    mapOf("categories" to categories)
                 )
             )
         }
@@ -50,10 +51,18 @@ fun Route.newQuestionPage(dao: DAOFacade) {
         val post = call.receiveParameters()
         val newQuestionId = dao.createQuestion(post["text"].toString())
         val answers = post.getAll("answers[]")
-        answers?.forEach {
+        var i = 1
+        answers?.map {
             if (it.isNotEmpty()) {
-                dao.createAnswer(newQuestionId, it)
+                var answerId = dao.createAnswer(newQuestionId, it)
+                val categories = post.getAll("categories_$i[]")
+                categories?.map {category ->
+                    dao.createPairAnswerCategory(
+                        answerId = answerId,
+                        categoryId = category.toInt())
+                }
             }
+            i++
         }
         call.respondRedirect(QuestionsPage())
     }
@@ -106,6 +115,9 @@ fun Route.deleteQuestionPage(dao: DAOFacade) {
                 call.respondRedirect(QuestionsPage())
             } else {
                 dao.deleteQuestion(it.id)
+                dao.getAllAnswersForQuestion(it.id)
+                    ?.map { answer -> dao.deletePairsAnswerCategory(answer.id)
+                }
                 dao.deleteAllAnswers(it.id)
                 call.respondRedirect(QuestionsPage())
             }
