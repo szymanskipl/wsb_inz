@@ -13,50 +13,49 @@ interface DAOFacade : Closeable {
 
     //Users
     fun createUser(email: String, passwordHash: String, role: String)
-
     fun getUser(email: String): User?
     fun userVerify(email: String, password: String): User?
     //Universities
     fun createUniversity(name: String, city: String, urlAddress: String): Int
-
     fun updateUniversity(id: Int, name: String, city: String, urlAddress: String)
     fun deleteUniversity(id: Int)
     fun getUniversity(id: Int): University?
     fun getAllUniversities(): List<University>
     //Courses
     fun createCourse(name: String, description: String, categoryId: Int)
-
     fun updateCourse(id: Int, name: String, description: String, categoryId: Int)
     fun deleteCourse(id: Int)
     fun getCourse(id: Int): Course?
     fun getAllCourses(): List<Course>
+    fun getCoursesForCategory(categoryId: Int): List<Course>?
     //UniversityCourse
-    fun createPair(universityId: Int, course_id: Int)
-
+    fun createPairUniversityCourse(universityId: Int, course_id: Int)
     fun getAllCoursesForUniversity(universityId: Int): List<Course>?
-    fun deleteAllPairs(universityId: Int)
+    fun deleteAllPairsUniversityCourse(universityId: Int = 0, courseId: Int = 0)
     //Categories
     fun getCategory(id: Int): Category?
-
     fun getAllCategories(): List<Category>?
     fun getAllCategoriesForAnswer(answerId: Int): List<Category>?
     //Questions
     fun createQuestion(text: String): Int
-
     fun getQuestion(id: Int): Question?
     fun getAllQuestions(): List<Question>
     fun deleteQuestion(id: Int)
     fun updateQuestion(id: Int, text: String)
     //Answers
     fun createAnswer(questionId: Int, text: String): Int
-
     fun getAllAnswersForQuestion(questionId: Int): List<Answer>?
     fun getAllAnswers(): List<Answer>?
     fun deleteAllAnswers(questionId: Int)
     //AnswerCategory
     fun createPairAnswerCategory(answerId: Int, categoryId: Int)
-
     fun deletePairsAnswerCategory(answerId: Int)
+    //Survey
+    fun newSurvey(): Int
+    fun putAnswerToSurvey(surveyId: Int, answerId: Int)
+    fun getAnswersForSurvey(surveyId: Int): List<Answer>?
+    fun setRecommendedCourses(surveyId: Int, courseId: Int)
+    fun getCoursesForSurvey(surveyId: Int): List<Course>?
 }
 
 class DAOFacadeDatabase(val db: Database) : DAOFacade {
@@ -167,8 +166,16 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         }
     }
 
+    override fun getCoursesForCategory(categoryId: Int): List<Course>? = transaction(db) {
+        Courses
+            .select() {Courses.categoryId eq categoryId}
+            .map {
+                Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.categoryId])
+            }
+    }
+
     //UniversityCourse
-    override fun createPair(universityId: Int, course_id: Int) = transaction(db) {
+    override fun createPairUniversityCourse(universityId: Int, course_id: Int) = transaction(db) {
         UniversityCourse.insert {
             it[UniversityCourse.universityId] = universityId
             it[UniversityCourse.courseId] = course_id
@@ -185,11 +192,18 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
             }
     }
 
-    override fun deleteAllPairs(universityId: Int) = transaction(db) {
-        UniversityCourse
-            .deleteWhere {
-                UniversityCourse.universityId eq universityId
-            }
+    override fun deleteAllPairsUniversityCourse(universityId: Int, courseId: Int) = transaction(db) {
+        if(universityId != 0) {
+            UniversityCourse
+                .deleteWhere {
+                    UniversityCourse.universityId eq universityId
+                }
+        } else {
+            UniversityCourse
+                .deleteWhere {
+                    UniversityCourse.courseId eq courseId
+                }
+        }
         Unit
     }
 
@@ -281,7 +295,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
                 Answers.questionId eq questionId
             }
             .map {
-                Answer(it[Answers.id], it[Answers.questionId], it[Answers.text])
+                Answer(it[Answers.id], it[Answers.questionId], it[Answers.text], getAllCategoriesForAnswer(it[Answers.id]))
             }
     }
 
@@ -289,7 +303,7 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         Answers
             .selectAll()
             .map {
-                Answer(it[Answers.id], it[Answers.questionId], it[Answers.text])
+                Answer(it[Answers.id], it[Answers.questionId], it[Answers.text], getAllCategoriesForAnswer(it[Answers.id]))
             }
     }
 
@@ -311,13 +325,62 @@ class DAOFacadeDatabase(val db: Database) : DAOFacade {
         Unit
     }
 
-
     override fun deletePairsAnswerCategory(answerId: Int) = transaction(db) {
         AnswerCategory
             .deleteWhere {
                 AnswerCategory.answerId eq answerId
             }
         Unit
+    }
+
+    //Survey
+    override fun newSurvey(): Int = transaction(db) {
+        Surveys.insert {
+
+        } get Surveys.id
+    }
+
+    override fun putAnswerToSurvey(surveyId: Int, answerId: Int) = transaction(db) {
+        SurveyAnswer
+            .insert {
+                it[SurveyAnswer.surveyId] = surveyId
+                it[SurveyAnswer.answerId] = answerId
+            }
+        Unit
+    }
+
+    override fun getAnswersForSurvey(surveyId: Int): List<Answer>? = transaction(db) {
+        SurveyAnswer
+            .leftJoin(Answers, { SurveyAnswer.answerId }, { Answers.id })
+            .select {
+                SurveyAnswer.surveyId eq surveyId
+            }
+            .map {
+                Answer(
+                    id = it[Answers.id],
+                    questionId = it[Answers.questionId],
+                    text = it[Answers.text],
+                    categories = getAllCategoriesForAnswer(it[Answers.id])
+                )
+            }
+    }
+
+    override fun setRecommendedCourses(surveyId: Int, courseId: Int) = transaction(db) {
+        SurveyResults
+            .insert {
+                it[SurveyResults.surveyId] = surveyId
+                it[SurveyResults.courseId] = courseId
+            }
+        Unit
+    }
+
+    override fun getCoursesForSurvey(surveyId: Int): List<Course>? = transaction(db) {
+        SurveyResults
+            .leftJoin(Courses, { SurveyResults.courseId }, { Courses.id })
+            .select() {SurveyResults.surveyId eq surveyId}
+            .map {
+                Course(it[Courses.id], it[Courses.name], it[Courses.description], it[Courses.categoryId])
+            }
     }
 
     override fun close() {}

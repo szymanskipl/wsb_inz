@@ -19,7 +19,7 @@ fun Route.coursesPage(dao: DAOFacade) {
         if (session == null) {
             call.respondRedirect(Login())
         } else {
-            val courses: List<Course> = dao.getAllCourses()
+            val courses: List<Course> = dao.getAllCourses().sortedBy { it.name }
             call.respond(
                 FreeMarkerContent(
                     "courses.ftl",
@@ -89,6 +89,7 @@ fun Route.deleteCoursePage(dao: DAOFacade) {
             if (course == null) {
                 call.respondRedirect(CoursesPage())
             } else {
+                dao.deleteAllPairsUniversityCourse(courseId = it.id)
                 dao.deleteCourse(it.id)
                 call.respondRedirect(CoursesPage())
             }

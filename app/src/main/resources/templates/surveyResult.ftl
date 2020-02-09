@@ -1,5 +1,5 @@
 <#import "template.ftl" as layout />
-<@layout.mainLayout title="Ankieta">
+<@layout.mainLayout title="Ankieta - wyniki">
 <body>
     <div class="wraper">
 
@@ -39,41 +39,25 @@
                   </div>
               </div>
 
-        <form action="/ankieta" method="post" enctype="application/x-www-form-urlencoded">
           <div class="main-content">
             <div class="card survey">
-              <div class="card-header text-center question" name="question_id" value="${question.id}">
-                ${question.text}
+              <div class="card-header text-center question">
+                Kierunki, które pasują do Ciebie:
               </div>
               <div class="card-body">
                   <table id="answers">
                     <tbody>
+                    <#list courses as course>
                       <tr class="text-center">
                         <td>
-                          <button type="submit" value="${answers[0].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[0].text}</button>
-                        </td>
-                        <td>
-                          <button type="submit" value="${answers[1].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[1].text}</button>
+                          <button class="btn btn-primary btn-lg">${course.name}</button>
                         </td>
                       </tr class="text-center">
-                      <#if answers[2]??>
-                      <tr class="text-center">
-                        <td>
-                          <button type="submit" value="${answers[2].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[2].text}</button>
-                        </td>
-                        <#if answers[3]??>
-                        <td>
-                          <button type="submit" value="${answers[3].id}" class="btn btn-primary btn-lg" name="answer_id">${answers[3].text}</button>
-                        </td>
-                        </#if>
-                      </tr class="text-center">
-                      </#if>
+                    </#list>
                     </tbody>
               </div>
             </div>
           </div>
-          <input type="hidden" name="surveyId" value="${surveyId}">
-        </form>
     </div>
   </body>
 </@layout.mainLayout>

@@ -73,6 +73,15 @@ class DeleteQuestionPage(val id: Int)
 @Location("/ankieta")
 class SurveyPage()
 
+@Location("/wynik_ankiety")
+class SurveyResultPage(val id: Int)
+
+@Location("/miasta")
+class CitiesPage()
+
+@Location("/kierunki")
+class TopCourses()
+
 val dao = DAOFacadeDatabase(
     Database.connect(
         "jdbc:postgresql://localhost:5432/wsb?user=student",
@@ -133,7 +142,6 @@ fun Application.module(dao: DAOFacade) {
             "SESSION",
             directorySessionStorage(File(".session"), cached = true)
         ) {
-
             cookie.path = "/"
             transform(SessionTransportTransformerEncrypt(encryptKey, authKey))
         }
@@ -145,6 +153,9 @@ fun Application.module(dao: DAOFacade) {
     routing {
         static("/static") {
             resources("static")
+        }
+        get("/") {
+            call.respondRedirect(CitiesPage())
         }
         login(dao)
         coursesPage(dao)
@@ -160,6 +171,9 @@ fun Application.module(dao: DAOFacade) {
         editQuestionPage(dao)
         deleteQuestionPage(dao)
         surveyPage(dao)
+        surveyResultPage(dao)
+        citiesPage(dao)
+        topCourses(dao)
     }
 }
 

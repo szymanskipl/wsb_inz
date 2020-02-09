@@ -56,10 +56,11 @@ fun Route.newQuestionPage(dao: DAOFacade) {
             if (it.isNotEmpty()) {
                 var answerId = dao.createAnswer(newQuestionId, it)
                 val categories = post.getAll("categories_$i[]")
-                categories?.map {category ->
+                categories?.map { category ->
                     dao.createPairAnswerCategory(
                         answerId = answerId,
-                        categoryId = category.toInt())
+                        categoryId = category.toInt()
+                    )
                 }
             }
             i++
@@ -73,6 +74,7 @@ fun Route.editQuestionPage(dao: DAOFacade) {
         val session = call.sessions.get<AppSession>()
         val question = dao.getQuestion(it.id)
         val answers = dao.getAllAnswersForQuestion(it.id)
+        val categories = dao.getAllCategories()
         if (session == null) {
             call.respondRedirect(Login())
         } else {
@@ -82,7 +84,11 @@ fun Route.editQuestionPage(dao: DAOFacade) {
                 call.respond(
                     FreeMarkerContent(
                         "editQuestion.ftl",
-                        mapOf("question" to question, "answers" to answers)
+                        mapOf(
+                            "question" to question,
+                            "answers" to answers,
+                            "categories" to categories
+                        )
                     )
                 )
             }
@@ -93,12 +99,28 @@ fun Route.editQuestionPage(dao: DAOFacade) {
         val post = call.receiveParameters()
         val questionId = it.id
         dao.updateQuestion(it.id, post["text"].toString())
-        val answers = post.getAll("answers[]")
-        dao.deleteAllAnswers(questionId)
-        answers?.forEach {
-            if (it.isNotEmpty()) {
-                dao.createAnswer(questionId, it)
+        val newAnswers = post.getAll("answers[]")
+        //deleting old answers
+        dao.getAllAnswersForQuestion(questionId = questionId)
+            ?.map { answer ->
+                dao.deletePairsAnswerCategory(answerId = answer.id)
             }
+        dao.deleteAllAnswers(questionId = it.id)
+        //adding new answers
+        var i = 1
+        newAnswers?.map { answer ->
+            if (answer.isNotEmpty()) {
+                val answerId = dao.createAnswer(questionId, answer)
+                val categories = post.getAll("categories_$i[]")
+                categories
+                    ?.map { category ->
+                        dao.createPairAnswerCategory(
+                            answerId = answerId,
+                            categoryId = category.toInt()
+                        )
+                    }
+            }
+            i++
         }
         call.respondRedirect(QuestionsPage())
     }
@@ -116,8 +138,9 @@ fun Route.deleteQuestionPage(dao: DAOFacade) {
             } else {
                 dao.deleteQuestion(it.id)
                 dao.getAllAnswersForQuestion(it.id)
-                    ?.map { answer -> dao.deletePairsAnswerCategory(answer.id)
-                }
+                    ?.map { answer ->
+                        dao.deletePairsAnswerCategory(answer.id)
+                    }
                 dao.deleteAllAnswers(it.id)
                 call.respondRedirect(QuestionsPage())
             }

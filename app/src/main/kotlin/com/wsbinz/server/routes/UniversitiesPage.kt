@@ -12,7 +12,6 @@ import io.ktor.locations.*
 import io.ktor.request.receiveParameters
 import io.ktor.sessions.get
 import io.ktor.sessions.sessions
-import java.util.logging.Logger
 
 fun Route.universitiesPage(dao: DAOFacade) {
     get<UniversitiesPage> {
@@ -20,7 +19,7 @@ fun Route.universitiesPage(dao: DAOFacade) {
         if (session == null) {
             call.respondRedirect(Login())
         } else {
-            val universities: List<University> = dao.getAllUniversities()
+            val universities: List<University> = dao.getAllUniversities().sortedBy { it.name }
             call.respond(
                 FreeMarkerContent(
                     "universities.ftl",
@@ -52,7 +51,7 @@ fun Route.newUniversityPage(dao: DAOFacade) {
         val newUniversityId = dao.createUniversity(post["name"].toString(), post["city"].toString(), post["urlAddress"].toString())
         val coursesId = post.getAll("courses_list[]")
         coursesId?.forEach {
-            dao.createPair(newUniversityId, it.toInt())
+            dao.createPairUniversityCourse(newUniversityId, it.toInt())
         }
         call.respondRedirect(UniversitiesPage())
     }
@@ -80,9 +79,9 @@ fun Route.editUniversityPage(dao: DAOFacade) {
         val universityId = it.id
         dao.updateUniversity(it.id, post["name"].toString(), post["city"].toString(), post["urlAddress"].toString())
         val courses = post.getAll("courses_list[]")
-        dao.deleteAllPairs(it.id)
+        dao.deleteAllPairsUniversityCourse(it.id)
         courses?.forEach {
-            dao.createPair(universityId, it.toInt())
+            dao.createPairUniversityCourse(universityId, it.toInt())
         }
         call.respondRedirect(UniversitiesPage())
     }

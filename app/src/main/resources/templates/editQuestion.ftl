@@ -53,6 +53,28 @@
               />
         </div>
 
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi A:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_1[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                      <#if answers[0]??>
+                          <#list answers[0].categories as answerCategory>
+                            <#if category.id == answerCategory.id>checked</#if>
+                          </#list>
+                      </#if>
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
+        </div>
+
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź B (pole obowiązkowe)</label>
               <input
@@ -63,6 +85,28 @@
                 value="${answers[1].text}"
                 required
               />
+        </div>
+
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi B:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_2[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                      <#if answers[1]??>
+                          <#list answers[1].categories as answerCategory>
+                            <#if category.id == answerCategory.id>checked</#if>
+                          </#list>
+                      </#if>
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
         </div>
 
           <div class="form-group course-description">
@@ -76,6 +120,28 @@
               />
         </div>
 
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi C:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_3[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                      <#if answers[2]??>
+                          <#list answers[2].categories as answerCategory>
+                            <#if category.id == answerCategory.id>checked</#if>
+                          </#list>
+                      </#if>
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
+        </div>
+
           <div class="form-group course-description">
               <label for="formGroupExampleInput">Odpowiedź D (pole opcjonalne)</label>
               <input
@@ -85,6 +151,28 @@
                 id="formGroupExampleInput"
                 <#if answers[3]??>value="${answers[3].text}"</#if>
               />
+        </div>
+
+        <div class="card courses">
+          <div class="card-body">
+              <h4 class="card-title">Kategorie odpowiedzi D:</h4>
+                <#list categories as category>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="categories_4[]"
+                      class="form-check-input"
+                      value="${category.id}"
+                      <#if answers[3]??>
+                          <#list answers[3].categories as answerCategory>
+                            <#if category.id == answerCategory.id>checked</#if>
+                          </#list>
+                      </#if>
+                    />${category.name}</label>
+                </div>
+                </#list>
+          </div>
         </div>
 
           <div>
