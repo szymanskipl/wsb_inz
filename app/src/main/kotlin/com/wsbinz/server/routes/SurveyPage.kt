@@ -46,6 +46,7 @@ fun Route.surveyPage(dao: DAOFacade) {
             call.respondRedirect(SurveyPage())
         } else {
             questionNumber = 0
+            surveyId = null
             call.respondRedirect(SurveyResultPage(post["surveyId"]!!.toInt()))
         }
     }
