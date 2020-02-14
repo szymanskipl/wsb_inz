@@ -241,8 +241,13 @@ a:focus {
 }
 
 .main-content li {
-  font-size: 20px;
+  font-size: 18px;
   color: #263C7D;
+}
+
+.main-content ul {
+  column-count: 2;
+  padding: 1px;
 }
 
 .card.survey {

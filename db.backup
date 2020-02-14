@@ -1,0 +1,1032 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.1
+-- Dumped by pg_dump version 11.2
+
+-- Started on 2020-02-12 22:47:18
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- TOC entry 2893 (class 0 OID 0)
+-- Dependencies: 3
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+--
+-- TOC entry 605 (class 1247 OID 40962)
+-- Name: categoryenum; Type: TYPE; Schema: public; Owner: student
+--
+
+CREATE TYPE public.categoryenum AS ENUM (
+    'K1',
+    'K2',
+    'K3'
+);
+
+
+ALTER TYPE public.categoryenum OWNER TO student;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 213 (class 1259 OID 98332)
+-- Name: answer_category; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.answer_category (
+    answer_id integer NOT NULL,
+    category_id integer NOT NULL
+);
+
+
+ALTER TABLE public.answer_category OWNER TO student;
+
+--
+-- TOC entry 212 (class 1259 OID 98326)
+-- Name: answers; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.answers (
+    id integer NOT NULL,
+    question_id integer NOT NULL,
+    text character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.answers OWNER TO student;
+
+--
+-- TOC entry 211 (class 1259 OID 98324)
+-- Name: answers_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE public.answers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.answers_id_seq OWNER TO student;
+
+--
+-- TOC entry 2894 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: answers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE public.answers_id_seq OWNED BY public.answers.id;
+
+
+--
+-- TOC entry 205 (class 1259 OID 90134)
+-- Name: categories; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.categories (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.categories OWNER TO student;
+
+--
+-- TOC entry 204 (class 1259 OID 90132)
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE public.categories_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO student;
+
+--
+-- TOC entry 2895 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 90115)
+-- Name: courses; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.courses (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    "categoryId" integer NOT NULL
+);
+
+
+ALTER TABLE public.courses OWNER TO student;
+
+--
+-- TOC entry 202 (class 1259 OID 90113)
+-- Name: courses_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE public.courses_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_id_seq OWNER TO student;
+
+--
+-- TOC entry 2896 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: courses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE public.courses_id_seq OWNED BY public.courses.id;
+
+
+--
+-- TOC entry 210 (class 1259 OID 98318)
+-- Name: questions; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.questions (
+    id integer NOT NULL,
+    text character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.questions OWNER TO student;
+
+--
+-- TOC entry 209 (class 1259 OID 98316)
+-- Name: questions_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE public.questions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.questions_id_seq OWNER TO student;
+
+--
+-- TOC entry 2897 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE public.questions_id_seq OWNED BY public.questions.id;
+
+
+--
+-- TOC entry 200 (class 1259 OID 81940)
+-- Name: survey_answer; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.survey_answer (
+    survey_id integer NOT NULL,
+    answer_id integer NOT NULL
+);
+
+
+ALTER TABLE public.survey_answer OWNER TO student;
+
+--
+-- TOC entry 201 (class 1259 OID 81943)
+-- Name: survey_results; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.survey_results (
+    survey_id integer NOT NULL,
+    course_id integer NOT NULL
+);
+
+
+ALTER TABLE public.survey_results OWNER TO student;
+
+--
+-- TOC entry 199 (class 1259 OID 81934)
+-- Name: surveys; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.surveys (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.surveys OWNER TO student;
+
+--
+-- TOC entry 198 (class 1259 OID 81932)
+-- Name: surveys_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE public.surveys_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.surveys_id_seq OWNER TO student;
+
+--
+-- TOC entry 2898 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: surveys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE public.surveys_id_seq OWNED BY public.surveys.id;
+
+
+--
+-- TOC entry 207 (class 1259 OID 98307)
+-- Name: universities; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.universities (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    city character varying(20) NOT NULL,
+    url character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.universities OWNER TO student;
+
+--
+-- TOC entry 206 (class 1259 OID 98305)
+-- Name: universities_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE public.universities_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.universities_id_seq OWNER TO student;
+
+--
+-- TOC entry 2899 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: universities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE public.universities_id_seq OWNED BY public.universities.id;
+
+
+--
+-- TOC entry 208 (class 1259 OID 98313)
+-- Name: university_courses; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.university_courses (
+    university_id integer NOT NULL,
+    course_id integer NOT NULL
+);
+
+
+ALTER TABLE public.university_courses OWNER TO student;
+
+--
+-- TOC entry 197 (class 1259 OID 32771)
+-- Name: users; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    email character varying(100) NOT NULL,
+    password character varying(64) NOT NULL,
+    role character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO student;
+
+--
+-- TOC entry 196 (class 1259 OID 32769)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO student;
+
+--
+-- TOC entry 2900 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- TOC entry 2732 (class 2604 OID 98329)
+-- Name: answers id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.answers ALTER COLUMN id SET DEFAULT nextval('public.answers_id_seq'::regclass);
+
+
+--
+-- TOC entry 2729 (class 2604 OID 90137)
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
+-- TOC entry 2728 (class 2604 OID 90118)
+-- Name: courses id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.courses ALTER COLUMN id SET DEFAULT nextval('public.courses_id_seq'::regclass);
+
+
+--
+-- TOC entry 2731 (class 2604 OID 98321)
+-- Name: questions id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.questions ALTER COLUMN id SET DEFAULT nextval('public.questions_id_seq'::regclass);
+
+
+--
+-- TOC entry 2727 (class 2604 OID 81937)
+-- Name: surveys id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.surveys ALTER COLUMN id SET DEFAULT nextval('public.surveys_id_seq'::regclass);
+
+
+--
+-- TOC entry 2730 (class 2604 OID 98310)
+-- Name: universities id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.universities ALTER COLUMN id SET DEFAULT nextval('public.universities_id_seq'::regclass);
+
+
+--
+-- TOC entry 2726 (class 2604 OID 32774)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 2887 (class 0 OID 98332)
+-- Dependencies: 213
+-- Data for Name: answer_category; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.answer_category (answer_id, category_id) FROM stdin;
+7	1
+8	2
+9	1
+9	2
+30	1
+30	2
+31	3
+31	4
+31	5
+31	6
+32	1
+32	7
+32	8
+33	3
+33	4
+33	9
+33	10
+34	1
+34	2
+34	8
+34	9
+35	3
+35	4
+35	5
+35	6
+35	7
+35	10
+36	9
+37	1
+38	3
+38	6
+39	7
+39	8
+40	2
+41	9
+41	10
+42	5
+43	6
+44	2
+45	7
+46	3
+46	5
+47	10
+48	2
+49	7
+50	4
+51	8
+52	4
+55	10
+56	9
+57	8
+59	1
+61	5
+61	6
+\.
+
+
+--
+-- TOC entry 2886 (class 0 OID 98326)
+-- Dependencies: 212
+-- Data for Name: answers; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.answers (id, question_id, text) FROM stdin;
+30	6	j. polski, j. obce, historia, WOS, EDB
+31	6	matematyka, informatyka, fizyka, PP
+32	6	j. polski, WOK, plastyka, muzyka
+33	6	geografia, biologia, chemia, wf
+34	7	Tak
+35	7	Nie
+36	8	aktywne spędzanie czasu
+37	8	poznawanie tajników ludzkiego umysłu
+38	8	majsterkowanie
+39	8	kultura i sztuka
+40	9	kryminał
+41	9	artykuł o zdrowiu
+42	9	artykuł o tematyce finansowej
+43	9	poradnik informatyczny
+44	10	"Sposób na morderstwo" (serial prawniczy)
+45	10	"Abstrakt: sztuka designu"
+46	10	"Teoria wielkiego podrywu"
+47	10	"Dr House"
+48	11	escape room
+49	11	galeria sztuki
+50	11	grota solna
+51	11	koncert
+52	12	Tak
+53	12	Nie
+54	13	Tak
+55	13	Nie
+56	14	ścianka wspinaczkowa
+57	14	spektakl teatralny
+58	15	Tak
+59	15	Nie
+60	16	Tak
+61	16	Nie
+\.
+
+
+--
+-- TOC entry 2879 (class 0 OID 90134)
+-- Dependencies: 205
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.categories (id, name) FROM stdin;
+1	K1 - Pedagogika
+2	K2 - Prawo i Administracja
+3	K3 - Technika
+4	K4 - Geografia
+5	K5 - Ekonomia
+6	K6 - Politechnika
+7	K7 - Plastyka
+8	K8 - Muzyk/Aktor
+9	K9 - WF
+10	K10 - Medycyna
+\.
+
+
+--
+-- TOC entry 2877 (class 0 OID 90115)
+-- Dependencies: 203
+-- Data for Name: courses; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.courses (id, name, description, "categoryId") FROM stdin;
+10	ADMINISTRACJA	 	2
+19	ARCHITEKTURA WNĘTRZ	 	7
+17	AUTOMATYKA I ROBOTYKA	 	6
+9	BEZPIECZEŃSTWO WEWNĘTRZNE	 	2
+12	BIOTECHNOLOGIA	 	3
+26	DIETETYKA	 	9
+24	DYRYGENTURA	 	8
+15	FINANSE I RACHUNKOWOŚĆ	 	5
+25	FIZJOTERAPIA	 	9
+20	GRAFIKA	 	7
+14	GÓRNICTWO I GEOLOGIA	 	4
+18	INFORMATYKA INŻYNIERSKA	 	6
+28	KIERUNEK LEKARSKI	 	10
+27	KOSMETOLOGIA	 	9
+13	MECHANIKA I BUDOWA MASZYN	 	3
+22	MUZYKA	 	8
+6	PEDAGOGIKA	 	1
+7	PEDAGOGIKA WCZESNEJ EDUKACJI	 	1
+29	PIELĘGNIARSTWO	 	10
+11	PRAWO	 	2
+8	PSYCHOLOGIA	 	1
+30	RATOWNICTWO MEDYCZNE	 	10
+23	SZTUKI SCENICZNE	 	8
+21	WZORNICTWO	 	7
+16	ZARZĄDZANIE	 	5
+\.
+
+
+--
+-- TOC entry 2884 (class 0 OID 98318)
+-- Dependencies: 210
+-- Data for Name: questions; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.questions (id, text) FROM stdin;
+6	Który zestaw przedmiotów jest Ci bliższy?
+7	Czy lubisz zawierać nowe znajomości?
+8	Co najbardziej pasuje do Twoich zainteresowań?
+9	Co chętniej przeczytasz?
+10	Który serial wolałbyś obejrzeć?
+11	Gdzie poszedłbyś ze znajomym?
+12	Czy chciałbyś pracować na świeżym powietrzu?
+13	Czy boisz się krwi?
+14	Co wybierasz?
+15	Czy boisz się przemówień publicznych?
+16	Czy sprawia Tobie trudność rozwiązywanie zadań matematycznych?
+\.
+
+
+--
+-- TOC entry 2874 (class 0 OID 81940)
+-- Dependencies: 200
+-- Data for Name: survey_answer; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.survey_answer (survey_id, answer_id) FROM stdin;
+42	54
+42	57
+42	58
+42	61
+42	31
+42	35
+42	38
+42	43
+42	46
+42	49
+42	53
+42	54
+42	57
+42	58
+42	61
+43	31
+43	35
+43	37
+43	43
+43	46
+43	50
+43	53
+43	54
+43	57
+43	58
+43	61
+44	31
+44	35
+44	38
+44	43
+44	46
+44	50
+44	53
+44	54
+44	57
+44	58
+44	61
+45	30
+45	34
+45	36
+45	40
+45	44
+45	48
+45	52
+45	54
+45	56
+45	59
+45	60
+46	31
+46	35
+46	38
+46	43
+46	46
+46	48
+46	53
+46	54
+46	56
+46	58
+46	61
+47	31
+47	35
+47	38
+47	41
+47	45
+47	49
+47	52
+47	55
+47	57
+47	59
+47	60
+42	31
+42	35
+42	38
+42	43
+42	46
+42	50
+42	53
+\.
+
+
+--
+-- TOC entry 2875 (class 0 OID 81943)
+-- Dependencies: 201
+-- Data for Name: survey_results; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.survey_results (survey_id, course_id) FROM stdin;
+42	17
+42	18
+42	17
+42	18
+43	15
+43	16
+44	17
+44	18
+45	9
+45	10
+45	11
+46	17
+46	18
+47	12
+47	13
+\.
+
+
+--
+-- TOC entry 2873 (class 0 OID 81934)
+-- Dependencies: 199
+-- Data for Name: surveys; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.surveys (id) FROM stdin;
+28
+43
+44
+45
+46
+47
+48
+\.
+
+
+--
+-- TOC entry 2881 (class 0 OID 98307)
+-- Dependencies: 207
+-- Data for Name: universities; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.universities (id, name, city, url) FROM stdin;
+3	AKADEMIA MUZYCZNA IM. IGNACEGO JANA PADEREWSKIEGO	Poznań	 
+4	AKADEMIA WYCHOWANIA FIZYCZNEGO	Poznań	 
+6	UNIWERSYTET ARTYSTYCZNY	Poznań	 
+7	UNIWERSYTET EKONOMICZNY	Poznań	 
+8	UNIWERSYTET MEDYCZNY	Poznań	 
+9	UNIWERSYTET PRZYRODNICZY	Poznań	 
+10	UNIWERSYTET PRZYRODNICZY	Wrocław	 
+11	AKADEMIA MUZYCZNA	Wrocław	 
+14	AKADEMIA WYCHOWANIA FIZYCZNEGO	Wrocław	 
+17	UNIWERSYTET EKONOMICZNY	Wrocław	 
+18	UNIWERSYTET MEDYCZNY	Wrocław	 
+21	AKADEMIA PEDAGOGIKI SPECJALNEJ	Warszawa	 
+22	AKADEMIA SZTUKI WOJENNEJ	Warszawa	 
+23	WOJSKOWA AKADEMIA TECHNICZNA	Warszawa	 
+25	AKADEMIA TEATRALNA IM. ALEKSANDRA ZELWEROWICZA	Warszawa	 
+26	POLITECHNIKA WARSZAWSKA	Warszawa	 
+28	UNIWERSYTET MUZYCZNY IM. FRYDERYKA CHOPINA	Warszawa	 
+29	UNIWERSYTET WARSZAWSKI	Warszawa	 
+30	WARSZAWSKI UNIWERSYTET MEDYCZNY	Warszawa	 
+5	POLITECHNIKA POZNAŃSKA	Poznań	 
+1	UNIWERSYTET IM. ADAMA MICKIEWICZA	Poznań	
+12	AKADEMIA SZTUK PIĘKNYCH	Wrocław	 
+13	AKADEMIA WOJSK LĄDOWYCH	Wrocław	 
+15	PAŃSTWOWA WYŻSZA SZKOŁA TEATRALNA	Wrocław	 
+16	POLITECHNIKA WROCŁAWSKA	Wrocław	 
+19	UNIWERSYTET WROCŁAWSKI	Wrocław	 
+20	UNIWERSYTET KARDYNAŁA STEFANA WYSZYŃSKIEGO	Warszawa	 
+24	AKADEMIA SZTUK PIĘKNYCH	Warszawa	 
+27	SZKOŁA GŁÓWNA HANDLOWA	Warszawa	 
+\.
+
+
+--
+-- TOC entry 2882 (class 0 OID 98313)
+-- Dependencies: 208
+-- Data for Name: university_courses; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.university_courses (university_id, course_id) FROM stdin;
+3	22
+3	24
+4	25
+4	26
+4	27
+5	12
+5	13
+5	17
+5	18
+6	23
+7	15
+7	16
+8	26
+8	28
+8	29
+8	30
+9	14
+1	6
+1	7
+1	8
+1	10
+1	11
+1	15
+1	16
+10	14
+11	22
+11	24
+12	19
+12	20
+12	21
+13	9
+14	25
+14	26
+14	27
+15	23
+16	12
+16	13
+16	17
+16	18
+17	15
+17	16
+18	26
+18	28
+18	29
+18	30
+19	6
+19	7
+19	8
+19	10
+19	11
+20	6
+20	7
+20	8
+20	10
+20	11
+21	6
+21	7
+21	8
+22	9
+23	9
+23	10
+23	17
+23	18
+24	20
+24	21
+25	23
+26	12
+26	13
+26	17
+26	18
+27	15
+27	16
+28	22
+28	24
+29	6
+29	7
+29	8
+29	9
+29	10
+29	11
+30	26
+30	28
+30	29
+30	30
+\.
+
+
+--
+-- TOC entry 2871 (class 0 OID 32771)
+-- Dependencies: 197
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY public.users (id, email, password, role) FROM stdin;
+1	admin@admin.pl	$2a$10$bDkTp0iefios8jDsCQ..luWg6FmVmAC5bhOPdHW92jL86CVi30yCi	admin
+\.
+
+
+--
+-- TOC entry 2901 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: answers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('public.answers_id_seq', 61, true);
+
+
+--
+-- TOC entry 2902 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
+
+
+--
+-- TOC entry 2903 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: courses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('public.courses_id_seq', 30, true);
+
+
+--
+-- TOC entry 2904 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('public.questions_id_seq', 16, true);
+
+
+--
+-- TOC entry 2905 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: surveys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('public.surveys_id_seq', 48, true);
+
+
+--
+-- TOC entry 2906 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: universities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('public.universities_id_seq', 30, true);
+
+
+--
+-- TOC entry 2907 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+
+
+--
+-- TOC entry 2748 (class 2606 OID 98331)
+-- Name: answers pk_answers; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.answers
+    ADD CONSTRAINT pk_answers PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2742 (class 2606 OID 90139)
+-- Name: categories pk_categories; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT pk_categories PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2740 (class 2606 OID 90123)
+-- Name: courses pk_courses; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.courses
+    ADD CONSTRAINT pk_courses PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2746 (class 2606 OID 98323)
+-- Name: questions pk_questions; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.questions
+    ADD CONSTRAINT pk_questions PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2738 (class 2606 OID 81939)
+-- Name: surveys pk_surveys; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.surveys
+    ADD CONSTRAINT pk_surveys PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2744 (class 2606 OID 98312)
+-- Name: universities pk_universities; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.universities
+    ADD CONSTRAINT pk_universities PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2734 (class 2606 OID 32776)
+-- Name: users pk_users; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT pk_users PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2736 (class 2606 OID 32778)
+-- Name: users users_email_unique; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_unique UNIQUE (email);
+
+
+-- Completed on 2020-02-12 22:47:18
+
+--
+-- PostgreSQL database dump complete
+--
+
